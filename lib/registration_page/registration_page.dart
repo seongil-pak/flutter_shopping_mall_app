@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart'; // 숫자 포맷팅을 위한 패키지
 import 'dart:io';
 
 class RegistrationPage extends StatefulWidget {
@@ -16,7 +15,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
       TextEditingController(); // 상품 이름 컨트롤러
   final TextEditingController _descriptionController =
       TextEditingController(); // 상품 설명 컨트롤러
-  final NumberFormat _numberFormat = NumberFormat("#,###"); // 천 단위 포맷
 
   final List<Map<String, dynamic>> _products = []; // 저장된 상품 목록
 
@@ -48,28 +46,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
-  // 가격 입력값 포맷팅
-  void _formatPrice(String value) {
-    String newValue = value.replaceAll(',', ''); // 기존 쉼표 제거
-    if (newValue.isEmpty) {
-      _priceController.value = TextEditingValue(
-        text: '',
-        selection: TextSelection.collapsed(offset: 0),
-      );
-      return;
-    }
-
-    // 숫자로 변환 후 포맷팅
-    int number = int.tryParse(newValue) ?? 0;
-    String formattedValue = _numberFormat.format(number);
-
-    // 포맷팅된 값으로 컨트롤러 갱신
-    _priceController.value = TextEditingValue(
-      text: formattedValue,
-      selection: TextSelection.collapsed(offset: formattedValue.length),
-    );
-  }
-
   // 등록하기 버튼 로직
   void _saveProduct() {
     // 모든 필드가 입력되었는지 확인
@@ -85,7 +61,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     // 데이터를 Map으로 저장
     final Map<String, dynamic> productData = {
       'name': _nameController.text,
-      'price': _priceController.text.replaceAll(',', ''), // 쉼표 제거된 가격
+      'price': _priceController.text, // 쉼표 제거 로직 없음
       'description': _descriptionController.text,
       'image': _selectedImage,
     };
@@ -209,7 +185,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         isDense: true,
                       ),
                       keyboardType: TextInputType.number,
-                      onChanged: _formatPrice, // 입력값 변경 시 포맷팅 적용
                     ),
                   ),
                   SizedBox(width: 8),
