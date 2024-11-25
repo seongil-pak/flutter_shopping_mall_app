@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_mall_app/explanation_page/explanation_page.dart';
 import 'package:flutter_shopping_mall_app/list_page/list_page.dart';
 import 'package:flutter_shopping_mall_app/registration_page/registration_page.dart';
 
@@ -71,7 +73,9 @@ class HomePage extends StatelessWidget {
               width: 300,
               height: 80,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  exit(0);
+                },
                 child: Text(
                   '앱 종료',
                   style: TextStyle(
