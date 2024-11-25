@@ -16,7 +16,7 @@ class ListPage extends StatelessWidget {
        price: 16000,
       ),
     );
-    //final List<Product> products = [];//빈화면 테스트용-> 위의 테스트 데이터 주석처리하고 이걸 활성화.
+    //final List<Product> products = [];//빈화면 테스트용-> 위의 테스트 데이터 주석처리하고 해당줄 활성시 빈화면 표시.
 
     // 메인 화면 구조
     return Scaffold(
@@ -54,21 +54,6 @@ class ListPage extends StatelessWidget {
       body: products.isEmpty 
           ? const EmptyProductList()
           : ProductList(products: products),
-      // 우측 하단 플로팅 버튼
-      floatingActionButton: SizedBox(
-  width: 70, // 버튼 크기 증가
-  height: 70, // 버튼 크기 증가
-  child: FloatingActionButton(
-    onPressed: () {},
-    backgroundColor: Colors.deepPurple[600],
-    shape: const CircleBorder(), // 완전한 원형으로 변경
-    child: const Icon(
-      Icons.add,
-      color: Colors.white,
-      size: 40, // 아이콘 크기도 증가
-    ),
-  ),
-),
     );
   }
 }
