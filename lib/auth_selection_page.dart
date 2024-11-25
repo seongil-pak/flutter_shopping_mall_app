@@ -10,7 +10,6 @@ void main() {
   ));
 }
 
-
 class AuthSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class AuthSelectionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Zen',
+              'Zent',
               style: TextStyle(
                 fontSize: 100,
                 fontWeight: FontWeight.bold,
