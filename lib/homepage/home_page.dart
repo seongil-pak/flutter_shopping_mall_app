@@ -89,34 +89,6 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10))),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              width: 300,
-              height: 80,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return ExplanationPage();
-                    }),
-                  );
-                },
-                child: Text(
-                  '상품 정보',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-              ),
-            ),
           ],
         ),
       ),

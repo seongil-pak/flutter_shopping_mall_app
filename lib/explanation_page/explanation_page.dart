@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_mall_app/explanation_page/%08product.dart';
+import 'product.dart';
 
 class ExplanationPage extends StatelessWidget {
+  final Product product;
+
+  ExplanationPage({required this.product});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,22 +19,35 @@ class ExplanationPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(color: Colors.black),
-            child: SizedBox(
-              width: 450,
-              height: 200,
-            ),
+            child: product.image != null
+                ? Image.file(
+                    product.image!,
+                    width: 450,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  )
+                : SizedBox(
+                    width: 450,
+                    height: 200,
+                    child: Center(
+                      child: Text(
+                        'No Image',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
                 Text(
-                  '상품 이름',
+                  product.name,
                   style: TextStyle(fontSize: 20),
                 ),
                 Spacer(),
                 Text(
-                  '18000원',
+                  '${product.price}원',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -43,11 +62,9 @@ class ExplanationPage extends StatelessWidget {
                   '상품 설명',
                   style: TextStyle(fontSize: 18),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Text(
-                  '상품 상세 정보',
+                  product.description,
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -58,7 +75,6 @@ class ExplanationPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
-              decoration: BoxDecoration(),
               margin: EdgeInsets.only(bottom: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,7 +99,6 @@ class ExplanationPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     child: Text('구매하기'),
-                    style: ElevatedButton.styleFrom(),
                   ),
                 ],
               ),
