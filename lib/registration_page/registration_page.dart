@@ -8,6 +8,16 @@ class RegistrationPage extends StatelessWidget {
         title: Text('상품 등록'),
         shape: Border(bottom: BorderSide(color: Colors.deepPurple)),
       ),
+      body: Column(
+        children: [
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.black,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
