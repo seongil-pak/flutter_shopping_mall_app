@@ -11,20 +11,47 @@ class ExplanationPage extends StatefulWidget {
 }
 
 class _ExplanationPageState extends State<ExplanationPage> {
-  List<Map<String, dynamic>> savedProducts = []; // 상품 데이터를 저장할 리스트
+  List<Map<String, dynamic>> savedProducts = [];
+  int quantity = 1;
 
   @override
   void initState() {
     super.initState();
-    // 전달받은 데이터를 저장
+
     saveProduct(widget.product);
   }
 
-  // 상품 저장 메서드
   void saveProduct(Map<String, dynamic> product) {
     setState(() {
-      savedProducts.add(product); // 상품 데이터를 리스트에 추가
+      savedProducts.add(product);
     });
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('구매 확인'),
+          content: Text('${widget.product['name']}을(를) ${quantity}개 구매하시겠습니까?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('구매하기'),
+              onPressed: () {
+                print('구매 완료: ${widget.product['name']} ${quantity}개');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -41,20 +68,22 @@ class _ExplanationPageState extends State<ExplanationPage> {
             decoration: BoxDecoration(color: Colors.black),
             child: widget.product['image'] != null
                 ? (widget.product['image'] is Uint8List
-                    ? Image.memory(
-                        widget.product['image'],
-                        width: 450,
-                        height: 200,
-                        fit: BoxFit.cover,
+                    ? AspectRatio(
+                        aspectRatio: 2.25 / 1,
+                        child: Image.memory(
+                          widget.product['image'],
+                          fit: BoxFit.cover,
+                        ),
                       )
-                    : Image.file(
-                        widget.product['image'],
-                        width: 450,
-                        height: 200,
-                        fit: BoxFit.cover,
+                    : AspectRatio(
+                        aspectRatio: 2.25 / 1,
+                        child: Image.file(
+                          widget.product['image'],
+                          fit: BoxFit.cover,
+                        ),
                       ))
                 : SizedBox(
-                    width: 450,
+                    width: double.infinity,
                     height: 200,
                     child: Center(
                       child: Text(
@@ -110,12 +139,22 @@ class _ExplanationPageState extends State<ExplanationPage> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            if (quantity > 1) {
+                              quantity--;
+                            }
+                          });
+                        },
                       ),
-                      Text('1'),
+                      Text('$quantity'),
                       IconButton(
                         icon: Icon(Icons.add),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            quantity++;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -125,8 +164,7 @@ class _ExplanationPageState extends State<ExplanationPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // 저장된 데이터 확인
-                      print('저장된 상품: $savedProducts');
+                      _showConfirmationDialog();
                     },
                     child: Text('구매하기'),
                   ),
