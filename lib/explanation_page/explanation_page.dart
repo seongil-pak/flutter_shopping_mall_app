@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_mall_app/product.dart';
-import '../product.dart';
+import 'package:flutter_shopping_mall_app/explanation_page/%08product.dart';
+import 'product.dart';
 
 class ExplanationPage extends StatelessWidget {
   final Product product;

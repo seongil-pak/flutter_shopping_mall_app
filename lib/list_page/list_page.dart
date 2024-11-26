@@ -1,25 +1,21 @@
 // 필요한 패키지 임포트
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // 천단위 구분자를 위한 패키지
-import '../product.dart'; // Product 클래스 정의가 있는 파일
-import '../explanation_page/explanation_page.dart'; // 상세 페이지 위젯
+import 'package:intl/intl.dart'; //천단위 구분자
 
-// 메인 리스트 페이지 위젯 (StatefulWidget으로 변경됨)
-class ListPage extends StatefulWidget {
-  const ListPage({Key? key}) : super(key: key);
-
-  @override
-  _ListPageState createState() => _ListPageState();
-}
-
-// ListPage의 상태를 관리하는 State 클래스
-class _ListPageState extends State<ListPage> {
-  // 실제 등록된 상품 데이터로 초기화 (예시 데이터)
-  // 또는 빈 리스트로 시작하여 조건부 렌더링을 테스트할 수 있음
-  final List<Product> products = []; // 빈 리스트로 시작
-
+// 메인 리스트 페이지 위젯
+class ListPage extends StatelessWidget {
+  const ListPage({super.key});
   @override
   Widget build(BuildContext context) {
+    // 테스트용 상품 데이터 생성
+    final List<Product> products = List.generate(
+      20,
+      (index) => Product(
+        name: '상품 이름 1',
+       price: 16000,
+      ),
+    );
+    //final List<Product> products = [];//빈화면 테스트용-> 위의 테스트 데이터 주석처리하고 해당줄 활성시 빈화면 표시.
     // 메인 화면 구조
     return Scaffold(
       backgroundColor: Colors.white,
@@ -54,17 +50,15 @@ class _ListPageState extends State<ListPage> {
       ),
       // 상품 유무에 따른 조건부 렌더링
       body: products.isEmpty 
-          ? const EmptyProductList() // 상품이 없을 때 빈 리스트 화면 표시
-          : ProductList(products: products), // 상품이 있을 때 리스트 표시
+          ? const EmptyProductList()
+          : ProductList(products: products),
     );
   }
 }
-
 // 상품 리스트 위젯
 class ProductList extends StatelessWidget {
   final List<Product> products;
-  const ProductList({Key? key, required this.products}) : super(key: key);
-
+  const ProductList({super.key, required this.products});
   @override
   Widget build(BuildContext context) {
     // 구분선이 있는 리스트뷰 구현
@@ -78,27 +72,14 @@ class ProductList extends StatelessWidget {
       ),
       // 각 상품 아이템 렌더링
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            // 상품 아이템 클릭 시 상세 페이지로 이동
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ExplanationPage(product: products[index]),
-              ),
-            );
-          },
-          child: ProductListItem(product: products[index]),
-        );
+        return ProductListItem(product: products[index]);
       },
     );
   }
 }
-
-// 빈 상품 리스트 화면 위젯 (변경 없음)
+// 빈 상품 리스트 화면 위젯
 class EmptyProductList extends StatelessWidget {
-  const EmptyProductList({Key? key}) : super(key: key);
-  
+  const EmptyProductList({super.key});
   @override
   Widget build(BuildContext context) {
     // 중앙 정렬된 텍스트 표시
@@ -113,15 +94,12 @@ class EmptyProductList extends StatelessWidget {
     );
   }
 }
-
-// 개별 상품 아이템 위젯 (상품명 위치 조정됨)
+// 개별 상품 아이템 위젯
 class ProductListItem extends StatelessWidget {
   final Product product;
   // 천단위 구분자 포맷터 생성
   final formatter = NumberFormat('#,###');
-  
-  ProductListItem({Key? key, required this.product}) : super(key: key);
-
+  ProductListItem({super.key, required this.product});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -144,26 +122,31 @@ class ProductListItem extends StatelessWidget {
             child: Container(
               height: 120, // 리스트 아이템 높이
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children:
-                [
-                  SizedBox(height:
-                  8), 
-                  Padding(padding:
-                  const EdgeInsets.only(top:
-                  12), child:
-                  Text(product.name, style:
-                  const TextStyle(fontSize:
-                  16, color:
-                  Colors.black87,),),), 
-                  Spacer(), 
-                  Align(alignment:
-                  Alignment.bottomRight, child:
-                  Text('${formatter.format(int.parse(product.price))} 원', style:
-                  const TextStyle(fontSize:
-                  16, color:
-                  Colors.black87,),),),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 상품명 (상단에서 약간 여백을 둠)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  // 가격 (오른쪽 하단)
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      '${formatter.format(product.price)} 원',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -172,4 +155,13 @@ class ProductListItem extends StatelessWidget {
       ),
     );
   }
+}
+// 상품 데이터 모델 클래스
+class Product {
+  final String name;
+  final int price;
+  Product({
+    required this.name,
+    required this.price,
+  });
 }
