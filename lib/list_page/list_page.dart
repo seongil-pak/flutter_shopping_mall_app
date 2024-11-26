@@ -1,7 +1,9 @@
-import 'dart:io'; // File 클래스 사용
-import 'dart:typed_data'; // Uint8List 타입 사용
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_mall_app/explanation_page/explanation_page.dart';
 import 'package:intl/intl.dart'; // 숫자 포맷용
+import 'explanation_page.dart'; // 상세 페이지 import
 
 class ListPage extends StatefulWidget {
   final List<Map<String, dynamic>> products;
@@ -87,9 +89,13 @@ class _ListPageState extends State<ListPage> {
                       style: TextStyle(color: Colors.black54),
                     ),
                     onTap: () {
-                      // 상품을 눌렀을 때 실행할 동작
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('${product['name']} 선택됨')),
+                      // 상품을 눌렀을 때 상세 페이지로 이동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ExplanationPage(product: product),
+                        ),
                       );
                     },
                   ),
