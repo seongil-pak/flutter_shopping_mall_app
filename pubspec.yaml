@@ -5,16 +5,14 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.3
+  sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-
-  # 추가된 패키지
-  image_picker: ^0.8.7+3 # 이미지 선택용
-  intl: ^0.18.0 # 숫자 포맷팅용 패키지
+  image_picker: ^0.8.7+3
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

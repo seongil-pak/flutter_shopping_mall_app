@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_mall_app/explanation_page/explanation_page.dart';
 import 'package:flutter_shopping_mall_app/list_page/list_page.dart';
 import 'package:flutter_shopping_mall_app/registration_page/registration_page.dart';
 
@@ -13,6 +12,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 상품 목록 보기 버튼
             SizedBox(
               width: 300,
               height: 80,
@@ -20,13 +20,13 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return ListPage();
-                    }),
+                    MaterialPageRoute(
+                      builder: (context) => ListPage(products: globalProducts),
+                    ),
                   );
                 },
                 child: Text(
-                  '삼품목록 보기',
+                  '상품목록 보기',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -34,13 +34,15 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
+
+            // 상품 등록하기 버튼
             SizedBox(
               width: 300,
               height: 80,
@@ -48,9 +50,9 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return RegistrationPage();
-                    }),
+                    MaterialPageRoute(
+                      builder: (context) => RegistrationPage(),
+                    ),
                   );
                 },
                 child: Text(
@@ -62,13 +64,15 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
+
+            // 앱 종료 버튼
             SizedBox(
               width: 300,
               height: 80,
@@ -85,8 +89,10 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
           ],

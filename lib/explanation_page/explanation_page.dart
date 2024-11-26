@@ -1,11 +1,58 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_mall_app/product.dart';
-import '../product.dart';
 
-class ExplanationPage extends StatelessWidget {
-  final Product product;
+class ExplanationPage extends StatefulWidget {
+  final Map<String, dynamic> product;
 
   ExplanationPage({required this.product});
+
+  @override
+  _ExplanationPageState createState() => _ExplanationPageState();
+}
+
+class _ExplanationPageState extends State<ExplanationPage> {
+  List<Map<String, dynamic>> savedProducts = [];
+  int quantity = 1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    saveProduct(widget.product);
+  }
+
+  void saveProduct(Map<String, dynamic> product) {
+    setState(() {
+      savedProducts.add(product);
+    });
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('구매 확인'),
+          content: Text('${widget.product['name']}을(를) ${quantity}개 구매하시겠습니까?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('구매하기'),
+              onPressed: () {
+                print('구매 완료: ${widget.product['name']} ${quantity}개');
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +66,24 @@ class ExplanationPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(color: Colors.black),
-            child: product.image != null
-                ? Image.file(
-                    product.image!,
-                    width: 450,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
+            child: widget.product['image'] != null
+                ? (widget.product['image'] is Uint8List
+                    ? AspectRatio(
+                        aspectRatio: 2.25 / 1,
+                        child: Image.memory(
+                          widget.product['image'],
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : AspectRatio(
+                        aspectRatio: 2.25 / 1,
+                        child: Image.file(
+                          widget.product['image'],
+                          fit: BoxFit.cover,
+                        ),
+                      ))
                 : SizedBox(
-                    width: 450,
+                    width: double.infinity,
                     height: 200,
                     child: Center(
                       child: Text(
@@ -42,12 +98,12 @@ class ExplanationPage extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  product.name,
+                  widget.product['name'] ?? '상품 이름 없음',
                   style: TextStyle(fontSize: 20),
                 ),
                 Spacer(),
                 Text(
-                  '${product.price}원',
+                  '${widget.product['price'] ?? 0}원',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -64,7 +120,7 @@ class ExplanationPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  product.description,
+                  widget.product['description'] ?? '설명 없음',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -83,12 +139,22 @@ class ExplanationPage extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            if (quantity > 1) {
+                              quantity--;
+                            }
+                          });
+                        },
                       ),
-                      Text('1'),
+                      Text('$quantity'),
                       IconButton(
                         icon: Icon(Icons.add),
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            quantity++;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -97,7 +163,9 @@ class ExplanationPage extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showConfirmationDialog();
+                    },
                     child: Text('구매하기'),
                   ),
                 ],
