@@ -1,11 +1,31 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_mall_app/explanation_page/%08product.dart';
-import 'product.dart';
 
-class ExplanationPage extends StatelessWidget {
-  final Product product;
+class ExplanationPage extends StatefulWidget {
+  final Map<String, dynamic> product;
 
   ExplanationPage({required this.product});
+
+  @override
+  _ExplanationPageState createState() => _ExplanationPageState();
+}
+
+class _ExplanationPageState extends State<ExplanationPage> {
+  List<Map<String, dynamic>> savedProducts = []; // 상품 데이터를 저장할 리스트
+
+  @override
+  void initState() {
+    super.initState();
+    // 전달받은 데이터를 저장
+    saveProduct(widget.product);
+  }
+
+  // 상품 저장 메서드
+  void saveProduct(Map<String, dynamic> product) {
+    setState(() {
+      savedProducts.add(product); // 상품 데이터를 리스트에 추가
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +39,20 @@ class ExplanationPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(color: Colors.black),
-            child: product.image != null
-                ? Image.file(
-                    product.image!,
-                    width: 450,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
+            child: widget.product['image'] != null
+                ? (widget.product['image'] is Uint8List
+                    ? Image.memory(
+                        widget.product['image'],
+                        width: 450,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        widget.product['image'],
+                        width: 450,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ))
                 : SizedBox(
                     width: 450,
                     height: 200,
@@ -42,12 +69,12 @@ class ExplanationPage extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  product.name,
+                  widget.product['name'] ?? '상품 이름 없음',
                   style: TextStyle(fontSize: 20),
                 ),
                 Spacer(),
                 Text(
-                  '${product.price}원',
+                  '${widget.product['price'] ?? 0}원',
                   style: TextStyle(fontSize: 20),
                 ),
               ],
@@ -64,7 +91,7 @@ class ExplanationPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  product.description,
+                  widget.product['description'] ?? '설명 없음',
                   style: TextStyle(fontSize: 18),
                 ),
               ],
@@ -97,7 +124,10 @@ class ExplanationPage extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // 저장된 데이터 확인
+                      print('저장된 상품: $savedProducts');
+                    },
                     child: Text('구매하기'),
                   ),
                 ],
