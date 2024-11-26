@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_mall_app/homepage/home_page.dart';
+import 'auth_selection_page.dart'; // AuthSelectionPage import
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      debugShowCheckedModeBanner: false, // 디버그 배너 제거
+      title: 'Zent App',
+      home: AuthSelectionPage(), // 앱의 첫 화면 설정
     );
   }
 }
